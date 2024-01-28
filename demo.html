@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="content">User</h1>
+    <h1 id="number">0</h1>
+    <button id="btn">Click</button>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+        integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+        crossorigin="anonymous"></script>
+    <script>
+        const socket = io("ws://localhost:8080");
+        socket.on("send-id", (socketId) => {
+            document.getElementById("content").innerHTML += `User ${socketId} has been connected. <br/>`;
+        })
+        document.getElementById("btn").onclick = () => {
+            socket.emit("increment-request", "")
+        }
+
+        socket.on("increment-response", (counter) => {
+            document.getElementById("number").innerHTML = counter
+        })
+    </script>
+</body>
+
+</html>
