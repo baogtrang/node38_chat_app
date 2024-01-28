@@ -13,8 +13,8 @@ const io = new Server(httpServer, {
 
 // io: an instance of the Socket.IO SERVER
 // socket: CLIENT (connection between a client and a server)
-// .on: ready to receive events
-// .emit: ready to send events
+// .on: to receive events
+// .emit: to send events
 
 let counter = 0;
 io.on("connection", (socket) => {
@@ -23,9 +23,14 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log(`User ${socket.id} has been disconnected.`);
   });
+  // set up an event listener for events coming from this specific client
   socket.on("increment-request", () => {
     counter++;
     io.emit("increment-response", counter);
+  });
+  // step 2: server receives the event from the client and emit data to other clients
+  socket.on("client-chat", ({ message, userName }) => {
+    io.emit("from-server", { message, userName });
   });
 });
 
