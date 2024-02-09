@@ -7,11 +7,12 @@ document.querySelector("#btn-name").onclick = () => {
   $("#myModal").modal("hide");
 };
 
-// step 1: take chat and send it to server
+/// step 1: take chat and send it to server
 document.getElementById("btn-send").onclick = () => {
   let message = document.getElementById("txt-send").value;
   let userName = localStorage.getItem("user");
-  socket.emit("client-chat", { message, userName });
+  let roomId = localStorage.getItem("room");
+  socket.emit("client-chat", { message, userName, roomId });
 };
 
 // step 3: client receives event from server and render data onto UI
@@ -39,6 +40,39 @@ socket.on("from-server", ({ message, userName }) => {
   // render chat onto UI
   document.getElementById("noiDung").innerHTML += content;
 });
+
+// join room. Client click on a room. event sent to server.
+// server adds client to room.
+document.getElementById("room-1").onclick = () => {
+  let roomId = "room-1";
+  localStorage.setItem("room", roomId);
+  // client send event to server
+  socket.emit("join", roomId);
+  // add room title 1
+  document.getElementById("title-room").innerHTML = roomId;
+  // reset chat
+  document.getElementById("noiDung").innerHTML = "";
+};
+document.getElementById("room-2").onclick = () => {
+  let roomId = "room-2";
+  localStorage.setItem("room", roomId);
+  // client send event to server
+  socket.emit("join", roomId);
+  // add room title 1
+  document.getElementById("title-room").innerHTML = roomId;
+  // reset chat
+  document.getElementById("noiDung").innerHTML = "";
+};
+document.getElementById("room-3").onclick = () => {
+  let roomId = "room-3";
+  localStorage.setItem("room", roomId);
+  // client send event to server
+  socket.emit("join", roomId);
+  // add room title 1
+  document.getElementById("title-room").innerHTML = roomId;
+  // reset chat
+  document.getElementById("noiDung").innerHTML = "";
+};
 
 // document.querySelector("#btn-send").onclick = () => {
 //     let mess = document.querySelector("#txt-send").value;

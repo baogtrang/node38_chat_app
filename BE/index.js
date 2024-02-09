@@ -29,8 +29,15 @@ io.on("connection", (socket) => {
     io.emit("increment-response", counter);
   });
   // step 2: server receives the event from the client and emit data to other clients
-  socket.on("client-chat", ({ message, userName }) => {
-    io.emit("from-server", { message, userName });
+  socket.on("client-chat", ({ message, userName, roomId }) => {
+    io.to(roomId).emit("from-server", { message, userName });
+  });
+  // server gets event and adds client to room
+  socket.on("join", (roomId) => {
+    // if client already joined the room, remove client
+    // socket.rooms.forEach((roomId) => socket.leave(roomId));
+    //add again
+    socket.join(roomId);
   });
 });
 
